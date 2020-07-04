@@ -112,18 +112,18 @@ public class ImportCommand extends SingleCommand {
             String code = args.get(0);
 
             if (code.isEmpty()) {
-                Message.IMPORT_INVALID_CODE.send(sender, code);
+                Message.IMPORT_WEB_INVALID_CODE.send(sender, code);
                 return CommandResult.INVALID_ARGS;
             }
 
             try {
                 data = plugin.getBytebin().getJsonContent(code).getAsJsonObject();
             } catch (UnsuccessfulRequestException e) {
-                Message.IMPORT_HTTP_REQUEST_FAILURE.send(sender, e.getResponse().code(), e.getResponse().message());
+                Message.HTTP_REQUEST_FAILURE.send(sender, e.getResponse().code(), e.getResponse().message());
                 return CommandResult.STATE_ERROR;
             } catch (IOException e) {
                 new RuntimeException("Error reading data to bytebin", e).printStackTrace();
-                Message.IMPORT_HTTP_UNKNOWN_FAILURE.send(sender);
+                Message.HTTP_UNKNOWN_FAILURE.send(sender);
                 return CommandResult.STATE_ERROR;
             }
 

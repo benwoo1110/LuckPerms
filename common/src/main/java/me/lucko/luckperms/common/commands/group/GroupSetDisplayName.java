@@ -93,7 +93,7 @@ public class GroupSetDisplayName extends ChildCommand<Group> {
         target.removeIf(DataType.NORMAL, context, NodeType.DISPLAY_NAME::matches, false);
 
         if (name.equals(target.getName())) {
-            Message.GROUP_SET_DISPLAY_NAME_REMOVED.send(sender, target.getName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.GROUP_SET_DISPLAY_NAME_REMOVED.send(sender, target.getName(), context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("setdisplayname", name, context)
@@ -105,7 +105,7 @@ public class GroupSetDisplayName extends ChildCommand<Group> {
 
         target.setNode(DataType.NORMAL, DisplayName.builder(name).withContext(context).build(), true);
 
-        Message.GROUP_SET_DISPLAY_NAME.send(sender, name, target.getName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+        Message.GROUP_SET_DISPLAY_NAME.send(sender, name, target.getName(), context);
 
         LoggedAction.build().source(sender).target(target)
                 .description("setdisplayname", name, context)

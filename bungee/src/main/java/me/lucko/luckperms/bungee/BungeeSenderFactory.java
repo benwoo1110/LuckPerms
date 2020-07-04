@@ -30,8 +30,7 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.sender.SenderFactory;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.Component;
-import net.kyori.text.adapter.bungeecord.TextAdapter;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.util.Tristate;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -66,7 +65,8 @@ public class BungeeSenderFactory extends SenderFactory<LPBungeePlugin, CommandSe
 
     @Override
     protected void sendMessage(CommandSender sender, Component message) {
-        TextAdapter.sendComponent(sender, message);
+        //TextAdapter.sendComponent(sender, message);
+        // TODO
     }
 
     @Override

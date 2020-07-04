@@ -129,7 +129,7 @@ public class UserPromote extends ChildCommand<User> {
                     return CommandResult.STATE_ERROR;
                 }
 
-                Message.USER_TRACK_ADDED_TO_FIRST.send(sender, target.getFormattedDisplayName(), result.getGroupTo().get(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+                Message.USER_TRACK_ADDED_TO_FIRST.send(sender, target.getFormattedDisplayName(), track.getName(), result.getGroupTo().get(), context);
 
                 LoggedAction.build().source(sender).target(target)
                         .description("promote", track.getName(), context)
@@ -143,9 +143,9 @@ public class UserPromote extends ChildCommand<User> {
                 String groupFrom = result.getGroupFrom().get();
                 String groupTo = result.getGroupTo().get();
 
-                Message.USER_PROMOTE_SUCCESS.send(sender, target.getFormattedDisplayName(), track.getName(), groupFrom, groupTo, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+                Message.USER_PROMOTE_SUCCESS.send(sender, target.getFormattedDisplayName(), track.getName(), groupFrom, groupTo, context);
                 if (!dontShowTrackProgress) {
-                    Message.BLANK.send(sender, MessageUtils.listToArrowSep(track.getGroups(), groupFrom, groupTo, false));
+                    Message.TRACK_PATH_HIGHLIGHTED_PROGRESSION.send(sender, track.getGroups(), groupFrom, groupTo, false);
                 }
 
                 LoggedAction.build().source(sender).target(target)

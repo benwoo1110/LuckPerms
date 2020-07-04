@@ -55,10 +55,10 @@ import me.lucko.luckperms.common.util.Iterators;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.ComponentBuilder;
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.ClickEvent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.node.Node;
 
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class SearchCommand extends SingleCommand {
         ConstraintNodeMatcher<Node> matcher = StandardNodeMatchers.of(Constraint.of(comparison, args.get(1)));
         int page = args.getIntOrDefault(2, 1);
 
-        Message.SEARCH_SEARCHING.send(sender, matcher);
+        Message.SEARCH_SEARCHING.send(sender, matcher.toString());
 
         List<NodeEntry<UUID, Node>> matchedUsers = plugin.getStorage().searchUserNodes(matcher).join();
         List<NodeEntry<String, Node>> matchedGroups = plugin.getStorage().searchGroupNodes(matcher).join();
@@ -128,7 +128,7 @@ public class SearchCommand extends SingleCommand {
                 .complete(args);
     }
 
-    private static <T extends Comparable<T>> void sendResult(Sender sender, List<NodeEntry<T, Node>> results, Function<T, String> lookupFunction, Message headerMessage, HolderType holderType, String label, int page, Comparison comparison) {
+    private static <T extends Comparable<T>> void sendResult(Sender sender, List<NodeEntry<T, Node>> results, Function<T, String> lookupFunction, Message.Args3<Integer, Integer, Integer> headerMessage, HolderType holderType, String label, int page, Comparison comparison) {
         results = new ArrayList<>(results);
         results.sort(NodeEntryComparator.normal());
 
@@ -150,40 +150,7 @@ public class SearchCommand extends SingleCommand {
         headerMessage.send(sender, page, pages.size(), results.size());
 
         for (Map.Entry<String, NodeEntry<T, Node>> ent : mappedContent) {
-            // only show the permission in the results if the comparison isn't equals
-            String permission = "";
-            if (comparison != StandardComparison.EQUAL) {
-                permission = "&7 - (" + ent.getValue().getNode().getKey() + ")";
-            }
-
-            String s = "&3> &b" + ent.getKey() + permission + "&7 - " + (ent.getValue().getNode().getValue() ? "&a" : "&c") + ent.getValue().getNode().getValue() + getNodeExpiryString(ent.getValue().getNode()) + MessageUtils.getAppendableNodeContextString(sender.getPlugin().getLocaleManager(), ent.getValue().getNode());
-            TextComponent message = TextUtils.fromLegacy(s, TextUtils.AMPERSAND_CHAR).toBuilder().applyDeep(makeFancy(ent.getKey(), holderType, label, ent.getValue(), sender.getPlugin())).build();
-            sender.sendMessage(message);
+            Message.SEARCH_NODE_ENTRY.send(sender, comparison != StandardComparison.EQUAL, ent.getValue().getNode(), ent.getKey(), holderType, label, sender.getPlugin());
         }
-    }
-
-    private static String getNodeExpiryString(Node node) {
-        if (!node.hasExpiry()) {
-            return "";
-        }
-
-        return " &8(&7expires in " + DurationFormatter.LONG.format(node.getExpiryDuration()) + "&8)";
-    }
-
-    private static Consumer<ComponentBuilder<?, ?>> makeFancy(String holderName, HolderType holderType, String label, NodeEntry<?, ?> perm, LuckPermsPlugin plugin) {
-        HoverEvent hoverEvent = HoverEvent.showText(TextUtils.fromLegacy(TextUtils.joinNewline(
-                "&3> " + (perm.getNode().getValue() ? "&a" : "&c") + perm.getNode().getKey(),
-                " ",
-                "&7Click to remove this node from " + holderName
-        ), TextUtils.AMPERSAND_CHAR));
-
-        boolean explicitGlobalContext = !plugin.getConfiguration().getContextsFile().getDefaultContexts().isEmpty();
-        String command = "/" + label + " " + NodeCommandFactory.undoCommand(perm.getNode(), holderName, holderType, explicitGlobalContext);
-        ClickEvent clickEvent = ClickEvent.suggestCommand(command);
-
-        return component -> {
-            component.hoverEvent(hoverEvent);
-            component.clickEvent(clickEvent);
-        };
     }
 }

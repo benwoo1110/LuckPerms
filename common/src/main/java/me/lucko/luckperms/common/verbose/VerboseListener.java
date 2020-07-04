@@ -44,8 +44,8 @@ import me.lucko.luckperms.common.verbose.event.MetaCheckEvent;
 import me.lucko.luckperms.common.verbose.event.PermissionCheckEvent;
 import me.lucko.luckperms.common.verbose.event.VerboseEvent;
 
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.query.QueryMode;
 import net.luckperms.api.util.Tristate;
 

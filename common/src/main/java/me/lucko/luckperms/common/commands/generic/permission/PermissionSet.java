@@ -88,7 +88,7 @@ public class PermissionSet extends GenericChildCommand {
         DataMutateResult result = target.setNode(DataType.NORMAL, builtNode, true);
 
         if (result.wasSuccessful()) {
-            Message.SETPERMISSION_SUCCESS.send(sender, node, value, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.SETPERMISSION_SUCCESS.send(sender, node, value, target.getFormattedDisplayName(), context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("permission", "set", node, value, context)
@@ -97,7 +97,7 @@ public class PermissionSet extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.ALREADY_HASPERMISSION.send(sender, target.getFormattedDisplayName(), node, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.ALREADY_HASPERMISSION.send(sender, target.getFormattedDisplayName(), node, context);
             return CommandResult.STATE_ERROR;
         }
     }

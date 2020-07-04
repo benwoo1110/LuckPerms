@@ -72,12 +72,7 @@ public class LogDispatcher {
                     boolean shouldCancel = LogNotify.isIgnoring(this.plugin, s.getUniqueId()) || (sender != null && s.getUniqueId().equals(sender.getUniqueId()));
                     return !this.plugin.getEventDispatcher().dispatchLogNotify(shouldCancel, entry, origin, s);
                 })
-                .forEach(s -> Message.LOG.send(s,
-                        entry.getSourceFriendlyString(),
-                        Character.toString(LoggedAction.getTypeCharacter(entry.getTarget().getType())),
-                        entry.getTargetFriendlyString(),
-                        entry.getDescription()
-                ));
+                .forEach(s -> Message.LOG.send(s, entry));
     }
 
     public void dispatch(LoggedAction entry, Sender sender) {

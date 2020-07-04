@@ -47,10 +47,10 @@ import me.lucko.luckperms.common.util.Iterators;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.ComponentBuilder;
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.ClickEvent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 
@@ -113,13 +113,11 @@ public class PermissionInfo extends GenericChildCommand {
 
         // send content
         for (Node node : content) {
-            String s = "&3> " + (node.getValue() ? "&a" : "&c") + node.getKey() + (sender.isConsole() ? " &7(" + node.getValue() + "&7)" : "") + MessageUtils.getAppendableNodeContextString(plugin.getLocaleManager(), node);
             if (node.hasExpiry()) {
-                s += "\n&2-    expires in " + DurationFormatter.LONG.format(node.getExpiryDuration());
+                Message.PERMISSION_INFO_TEMPORARY_NODE_ENTRY.send(sender, node, target, label);
+            } else {
+                Message.PERMISSION_INFO_NODE_ENTRY.send(sender, node, target, label);
             }
-
-            TextComponent message = TextUtils.fromLegacy(s, TextUtils.AMPERSAND_CHAR).toBuilder().applyDeep(makeFancy(target, label, node)).build();
-            sender.sendMessage(message);
         }
 
         return CommandResult.SUCCESS;
@@ -134,22 +132,4 @@ public class PermissionInfo extends GenericChildCommand {
         // fallback to priority
         return NodeWithContextComparator.reverse().compare(o1, o2);
     };
-
-    private static Consumer<ComponentBuilder<?, ?>> makeFancy(PermissionHolder holder, String label, Node node) {
-        HoverEvent hoverEvent = HoverEvent.showText(TextUtils.fromLegacy(TextUtils.joinNewline(
-                "§3> " + (node.getValue() ? "§a" : "§c") + node.getKey(),
-                " ",
-                "§7Click to remove this node from " + holder.getPlainDisplayName()
-        ), '§'));
-
-        String id = holder.getType() == HolderType.GROUP ? holder.getObjectName() : holder.getPlainDisplayName();
-        boolean explicitGlobalContext = !holder.getPlugin().getConfiguration().getContextsFile().getDefaultContexts().isEmpty();
-        String command = "/" + label + " " + NodeCommandFactory.undoCommand(node, id, holder.getType(), explicitGlobalContext);
-        ClickEvent clickEvent = ClickEvent.suggestCommand(command);
-
-        return component -> {
-            component.hoverEvent(hoverEvent);
-            component.clickEvent(clickEvent);
-        };
-    }
 }

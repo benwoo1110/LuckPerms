@@ -93,20 +93,13 @@ public class PermissionUnsetTemp extends GenericChildCommand {
             Node mergedNode = result.getMergedNode();
             //noinspection ConstantConditions
             if (mergedNode != null) {
-                Message.UNSET_TEMP_PERMISSION_SUBTRACT_SUCCESS.send(sender,
-                        mergedNode.getKey(),
-                        mergedNode.getValue(),
-                        target.getFormattedDisplayName(),
-                        DurationFormatter.LONG.format(mergedNode.getExpiryDuration()),
-                        MessageUtils.contextSetToString(plugin.getLocaleManager(), context),
-                        DurationFormatter.LONG.format(duration)
-                );
+                Message.UNSET_TEMP_PERMISSION_SUBTRACT_SUCCESS.send(sender, mergedNode.getKey(), mergedNode.getValue(), target.getFormattedDisplayName(), mergedNode.getExpiryDuration(), context, duration);
 
                 LoggedAction.build().source(sender).target(target)
                         .description("permission", "unsettemp", node, duration, context)
                         .build().submit(plugin, sender);
             } else {
-                Message.UNSET_TEMP_PERMISSION_SUCCESS.send(sender, node, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+                Message.UNSET_TEMP_PERMISSION_SUCCESS.send(sender, node, target.getFormattedDisplayName(), context);
 
                 LoggedAction.build().source(sender).target(target)
                         .description("permission", "unsettemp", node, context)
@@ -116,7 +109,7 @@ public class PermissionUnsetTemp extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.DOES_NOT_HAVE_TEMP_PERMISSION.send(sender, target.getFormattedDisplayName(), node, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.DOES_NOT_HAVE_TEMP_PERMISSION.send(sender, target.getFormattedDisplayName(), node, context);
             return CommandResult.STATE_ERROR;
         }
     }

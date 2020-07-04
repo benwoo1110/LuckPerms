@@ -91,14 +91,7 @@ public class LogSearch extends ChildCommand<Log> {
         Message.LOG_SEARCH_HEADER.send(sender, query, page, maxPage);
 
         for (Paginated.Entry<LoggedAction> e : entries) {
-            Message.LOG_ENTRY.send(sender,
-                    e.position(),
-                    DurationFormatter.CONCISE_LOW_ACCURACY.format(e.value().getDurationSince()),
-                    e.value().getSourceFriendlyString(),
-                    Character.toString(LoggedAction.getTypeCharacter(e.value().getTarget().getType())),
-                    e.value().getTargetFriendlyString(),
-                    e.value().getDescription()
-            );
+            Message.LOG_ENTRY.send(sender, e.position(), e.value());
         }
 
         return CommandResult.SUCCESS;

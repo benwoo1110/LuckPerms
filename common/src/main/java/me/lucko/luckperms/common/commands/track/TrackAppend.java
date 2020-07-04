@@ -32,7 +32,6 @@ import me.lucko.luckperms.common.command.access.CommandPermission;
 import me.lucko.luckperms.common.command.tabcomplete.TabCompleter;
 import me.lucko.luckperms.common.command.tabcomplete.TabCompletions;
 import me.lucko.luckperms.common.command.utils.ArgumentList;
-import me.lucko.luckperms.common.command.utils.MessageUtils;
 import me.lucko.luckperms.common.command.utils.StorageAssistant;
 import me.lucko.luckperms.common.locale.LocaleManager;
 import me.lucko.luckperms.common.locale.command.CommandSpec;
@@ -71,7 +70,7 @@ public class TrackAppend extends ChildCommand<Track> {
         if (result.wasSuccessful()) {
             Message.TRACK_APPEND_SUCCESS.send(sender, group.getName(), target.getName());
             if (target.getGroups().size() > 1) {
-                Message.BLANK.send(sender, MessageUtils.listToArrowSep(target.getGroups(), group.getName()));
+                Message.TRACK_PATH_HIGHLIGHTED.send(sender, target.getGroups(), group.getName());
             }
 
             LoggedAction.build().source(sender).target(target)

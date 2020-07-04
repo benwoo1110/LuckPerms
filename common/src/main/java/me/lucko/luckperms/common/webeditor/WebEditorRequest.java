@@ -44,11 +44,11 @@ import me.lucko.luckperms.common.util.gson.GsonProvider;
 import me.lucko.luckperms.common.util.gson.JArray;
 import me.lucko.luckperms.common.util.gson.JObject;
 
-import net.kyori.text.Component;
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.ClickEvent;
-import net.kyori.text.event.HoverEvent;
-import net.kyori.text.format.TextColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.luckperms.api.context.ImmutableContextSet;
 
 import java.io.ByteArrayOutputStream;
@@ -175,9 +175,9 @@ public class WebEditorRequest {
 
         Message.EDITOR_URL.send(sender);
 
-        Component message = TextComponent.builder(url).color(TextColor.AQUA)
+        Component message = TextComponent.builder(url).color(NamedTextColor.AQUA)
                 .clickEvent(ClickEvent.openUrl(url))
-                .hoverEvent(HoverEvent.showText(TextComponent.of("Click to open the editor.").color(TextColor.GRAY)))
+                .hoverEvent(HoverEvent.showText(TextComponent.of("Click to open the editor.").color(NamedTextColor.GRAY)))
                 .build();
 
         sender.sendMessage(message);

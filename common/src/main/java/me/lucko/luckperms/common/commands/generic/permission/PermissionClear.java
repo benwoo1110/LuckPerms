@@ -75,11 +75,7 @@ public class PermissionClear extends GenericChildCommand {
         target.removeIf(DataType.NORMAL, context.isEmpty() ? null : context, NodeType.PERMISSION::matches, false);
 
         int changed = before - target.normalData().size();
-        if (changed == 1) {
-            Message.PERMISSION_CLEAR_SUCCESS_SINGULAR.send(sender, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        } else {
-            Message.PERMISSION_CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        }
+        Message.PERMISSION_CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), context, changed);
 
         LoggedAction.build().source(sender).target(target)
                 .description("permission", "clear", context)

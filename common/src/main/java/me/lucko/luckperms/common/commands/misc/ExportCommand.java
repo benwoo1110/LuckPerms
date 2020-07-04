@@ -78,20 +78,20 @@ public class ExportCommand extends SingleCommand {
             }
 
             if (Files.exists(path)) {
-                Message.LOG_EXPORT_ALREADY_EXISTS.send(sender, path.toString());
+                Message.EXPORT_FILE_ALREADY_EXISTS.send(sender, path.toString());
                 return CommandResult.INVALID_ARGS;
             }
 
             try {
                 Files.createFile(path);
             } catch (IOException e) {
-                Message.LOG_EXPORT_FAILURE.send(sender);
+                Message.EXPORT_FILE_FAILURE.send(sender);
                 e.printStackTrace();
                 return CommandResult.FAILURE;
             }
 
             if (!Files.isWritable(path)) {
-                Message.LOG_EXPORT_NOT_WRITABLE.send(sender, path.toString());
+                Message.EXPORT_FILE_NOT_WRITABLE.send(sender, path.toString());
                 return CommandResult.FAILURE;
             }
 

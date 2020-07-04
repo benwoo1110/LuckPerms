@@ -87,7 +87,7 @@ public class ParentSetTrack extends GenericChildCommand {
         if (index > 0) {
             List<String> trackGroups = track.getGroups();
             if ((index - 1) >= trackGroups.size()) {
-                Message.DOES_NOT_EXIST.send(sender, index);
+                Message.DOES_NOT_EXIST.send(sender, String.valueOf(index));
                 return CommandResult.INVALID_ARGS;
             }
             groupName = track.getGroups().get(index - 1);
@@ -117,7 +117,7 @@ public class ParentSetTrack extends GenericChildCommand {
         target.removeIf(DataType.NORMAL, context, NodeType.INHERITANCE.predicate(n -> track.containsGroup(n.getGroupName())), false);
         target.setNode(DataType.NORMAL, Inheritance.builder(group.getName()).withContext(context).build(), true);
 
-        Message.SET_TRACK_PARENT_SUCCESS.send(sender, target.getFormattedDisplayName(), track.getName(), group.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+        Message.SET_TRACK_PARENT_SUCCESS.send(sender, target.getFormattedDisplayName(), track.getName(), group.getFormattedDisplayName(), context);
 
         LoggedAction.build().source(sender).target(target)
                 .description("parent", "settrack", track.getName(), groupName, context)

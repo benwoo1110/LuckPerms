@@ -45,7 +45,7 @@ public class TrackInfo extends ChildCommand<Track> {
 
     @Override
     public CommandResult execute(LuckPermsPlugin plugin, Sender sender, Track target, ArgumentList args, String label) {
-        Message.TRACK_INFO.send(sender, target.getName(), MessageUtils.listToArrowSep(target.getGroups()));
+        Message.TRACK_INFO.send(sender, target.getName(), Message.formatTrackPath(target.getGroups()));
         return CommandResult.SUCCESS;
     }
 }

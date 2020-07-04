@@ -143,9 +143,9 @@ public class UserDemote extends ChildCommand<User> {
                 String groupFrom = result.getGroupFrom().get();
                 String groupTo = result.getGroupTo().get();
 
-                Message.USER_DEMOTE_SUCCESS.send(sender, target.getFormattedDisplayName(), track.getName(), groupFrom, groupTo, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+                Message.USER_DEMOTE_SUCCESS.send(sender, target.getFormattedDisplayName(), track.getName(), groupFrom, groupTo, context);
                 if (!dontShowTrackProgress) {
-                    Message.BLANK.send(sender, MessageUtils.listToArrowSep(track.getGroups(), groupTo, groupFrom, true));
+                    Message.TRACK_PATH_HIGHLIGHTED_PROGRESSION.send(sender, track.getGroups(), groupTo, groupFrom, true);
                 }
 
                 LoggedAction.build().source(sender).target(target)

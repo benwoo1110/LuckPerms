@@ -25,9 +25,8 @@
 
 package me.lucko.luckperms.common.util;
 
-import net.kyori.text.Component;
-import net.kyori.text.TextComponent;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -48,19 +47,23 @@ public final class TextUtils {
     }
 
     public static TextComponent fromLegacy(String input, char character) {
-        return LegacyComponentSerializer.legacy().deserialize(input, character);
+        //return LegacyComponentSerializer.legacy().deserialize(input, character);
+        return null; // TODO
     }
 
     public static TextComponent fromLegacy(String input) {
-        return LegacyComponentSerializer.legacy().deserialize(input);
+        //return LegacyComponentSerializer.legacy().deserialize(input);
+        return null; // TODO
     }
 
     public static String toLegacy(Component component, char character) {
-        return LegacyComponentSerializer.legacy().serialize(component, character);
+        //return LegacyComponentSerializer.legacy().serialize(component, character);
+        return null; // TODO
     }
 
     public static String toLegacy(Component component) {
-        return LegacyComponentSerializer.legacy().serialize(component);
+        //return LegacyComponentSerializer.legacy().serialize(component);
+        return null; // TODO
     }
 
     public static String rewritePlaceholders(String input) {

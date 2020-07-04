@@ -242,7 +242,7 @@ public class Importer implements Runnable {
 
     private void sendProgress(int processedCount, int total) {
         int percent = (processedCount * 100) / total;
-        this.notify.forEach(s -> Message.IMPORT_PROGRESS.send(s, percent, processedCount, total, 0));
+        this.notify.forEach(s -> Message.IMPORT_PROGRESS.send(s, percent, processedCount, total));
     }
 
 }

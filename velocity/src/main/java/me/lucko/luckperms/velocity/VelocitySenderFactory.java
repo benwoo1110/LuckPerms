@@ -33,7 +33,7 @@ import me.lucko.luckperms.common.sender.SenderFactory;
 import me.lucko.luckperms.common.util.TextUtils;
 import me.lucko.luckperms.velocity.service.CompatibilityUtil;
 
-import net.kyori.text.Component;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.util.Tristate;
 
 import java.util.UUID;
@@ -66,7 +66,8 @@ public class VelocitySenderFactory extends SenderFactory<LPVelocityPlugin, Comma
 
     @Override
     protected void sendMessage(CommandSource source, Component message) {
-        source.sendMessage(message);
+        //source.sendMessage(message);
+        // TODO
     }
 
     @Override

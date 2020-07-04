@@ -46,8 +46,8 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.data.DataType;
@@ -103,13 +103,7 @@ public class MetaAddChatMeta extends GenericChildCommand {
 
         DataMutateResult result = target.setNode(DataType.NORMAL, this.type.builder(meta, priority).withContext(context).build(), true);
         if (result.wasSuccessful()) {
-            TextComponent.Builder builder = Message.ADD_CHATMETA_SUCCESS.asComponent(plugin.getLocaleManager(), target.getFormattedDisplayName(), this.type.name().toLowerCase(), meta, priority, MessageUtils.contextSetToString(plugin.getLocaleManager(), context)).toBuilder();
-            HoverEvent event = HoverEvent.showText(TextUtils.fromLegacy(
-                    "§3Raw " + this.type.name().toLowerCase() + ": §r" + meta,
-                    '§'
-            ));
-            builder.applyDeep(c -> c.hoverEvent(event));
-            sender.sendMessage(builder.build());
+            Message.ADD_CHATMETA_SUCCESS.send(sender, target.getFormattedDisplayName(), this.type, meta, priority, context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("meta" , "add" + this.type.name().toLowerCase(), priority, meta, context)
@@ -118,7 +112,7 @@ public class MetaAddChatMeta extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.ALREADY_HAS_CHAT_META.send(sender, target.getFormattedDisplayName(), this.type.name().toLowerCase(), meta, priority, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.ALREADY_HAS_CHAT_META.send(sender, target.getFormattedDisplayName(), this.type, meta, priority, context);
             return CommandResult.STATE_ERROR;
         }
     }

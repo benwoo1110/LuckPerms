@@ -40,7 +40,6 @@ import me.lucko.luckperms.common.locale.message.Message;
 import me.lucko.luckperms.common.model.User;
 import me.lucko.luckperms.common.plugin.LuckPermsPlugin;
 import me.lucko.luckperms.common.sender.Sender;
-import me.lucko.luckperms.common.util.DurationFormatter;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.verbose.event.MetaCheckEvent;
 
@@ -65,12 +64,11 @@ public class UserInfo extends ChildCommand<User> {
             return CommandResult.NO_PERMISSION;
         }
 
-        Message status = plugin.getBootstrap().isPlayerOnline(target.getUniqueId()) ? Message.PLAYER_ONLINE : Message.PLAYER_OFFLINE;
         Message.USER_INFO_GENERAL.send(sender,
                 target.getUsername().orElse("Unknown"),
-                target.getUniqueId(),
-                target.getUniqueId().version() == 4 ? "&2mojang" : "&8offline",
-                status.asString(plugin.getLocaleManager())
+                target.getUniqueId().toString(),
+                target.getUniqueId().version() == 4,
+                plugin.getBootstrap().isPlayerOnline(target.getUniqueId())
         );
 
         List<InheritanceNode> parents = target.normalData().inheritanceAsSortedSet().stream()
@@ -86,15 +84,14 @@ public class UserInfo extends ChildCommand<User> {
         if (!parents.isEmpty()) {
             Message.INFO_PARENT_HEADER.send(sender);
             for (InheritanceNode node : parents) {
-                Message.INFO_PARENT_ENTRY.send(sender, node.getGroupName(), MessageUtils.getAppendableNodeContextString(plugin.getLocaleManager(), node));
+                Message.INFO_PARENT_NODE_ENTRY.send(sender, node);
             }
         }
 
         if (!tempParents.isEmpty()) {
             Message.INFO_TEMP_PARENT_HEADER.send(sender);
             for (InheritanceNode node : tempParents) {
-                Message.INFO_PARENT_ENTRY.send(sender, node.getGroupName(), MessageUtils.getAppendableNodeContextString(plugin.getLocaleManager(), node));
-                Message.INFO_PARENT_ENTRY_EXPIRY.send(sender, DurationFormatter.LONG.format(node.getExpiryDuration()));
+                Message.INFO_PARENT_TEMPORARY_NODE_ENTRY.send(sender, node);
             }
         }
 
@@ -106,17 +103,11 @@ public class UserInfo extends ChildCommand<User> {
             queryOptions = plugin.getContextManager().getStaticQueryOptions();
         }
 
-        String context = "&bNone";
         String prefix = "&bNone";
         String suffix = "&bNone";
         String meta = "&bNone";
 
         ContextSet contextSet = queryOptions.context();
-        if (!contextSet.isEmpty()) {
-            context = contextSet.toSet().stream()
-                    .map(e -> MessageUtils.contextToString(plugin.getLocaleManager(), e.getKey(), e.getValue()))
-                    .collect(Collectors.joining(" "));
-        }
 
         MetaCache data = target.getCachedData().getMetaData(queryOptions);
         String prefixValue = data.getPrefix(MetaCheckEvent.Origin.INTERNAL);
@@ -137,7 +128,7 @@ public class UserInfo extends ChildCommand<User> {
                     .collect(Collectors.joining(" "));
         }
 
-        Message.USER_INFO_CONTEXTUAL_DATA.send(sender, active ? "&2active player" : "&8server", context, prefix, suffix, primaryGroup, meta);
+        Message.USER_INFO_CONTEXTUAL_DATA.send(sender, active, contextSet, prefix, suffix, primaryGroup, meta);
         return CommandResult.SUCCESS;
     }
 }

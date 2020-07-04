@@ -65,7 +65,7 @@ public class TrackRemove extends ChildCommand<Track> {
         if (result.wasSuccessful()) {
             Message.TRACK_REMOVE_SUCCESS.send(sender, groupName, target.getName());
             if (target.getGroups().size() > 1) {
-                Message.BLANK.send(sender, MessageUtils.listToArrowSep(target.getGroups()));
+                Message.TRACK_PATH.send(sender, target.getGroups());
             }
 
             LoggedAction.build().source(sender).target(target)

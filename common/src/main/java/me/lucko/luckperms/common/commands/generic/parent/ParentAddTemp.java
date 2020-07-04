@@ -88,7 +88,7 @@ public class ParentAddTemp extends GenericChildCommand {
         }
 
         if (group.getName().equalsIgnoreCase(target.getObjectName())) {
-            Message.ALREADY_TEMP_INHERITS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.ALREADY_TEMP_INHERITS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), context);
             return CommandResult.STATE_ERROR;
         }
 
@@ -96,7 +96,7 @@ public class ParentAddTemp extends GenericChildCommand {
 
         if (result.getResult().wasSuccessful()) {
             duration = result.getMergedNode().getExpiryDuration();
-            Message.SET_TEMP_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), DurationFormatter.LONG.format(duration), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.SET_TEMP_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), duration, context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("parent", "addtemp", group.getName(), duration, context)
@@ -105,7 +105,7 @@ public class ParentAddTemp extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.ALREADY_TEMP_INHERITS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.ALREADY_TEMP_INHERITS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), context);
             return CommandResult.STATE_ERROR;
         }
     }

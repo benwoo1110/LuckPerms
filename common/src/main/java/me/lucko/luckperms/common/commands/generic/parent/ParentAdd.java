@@ -84,7 +84,7 @@ public class ParentAdd extends GenericChildCommand {
         DataMutateResult result = target.setNode(DataType.NORMAL, Inheritance.builder(group.getName()).withContext(context).build(), true);
 
         if (result.wasSuccessful()) {
-            Message.SET_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.SET_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("parent", "add", group.getName(), context)
@@ -93,7 +93,7 @@ public class ParentAdd extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.ALREADY_INHERITS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.ALREADY_INHERITS.send(sender, target.getFormattedDisplayName(), group.getFormattedDisplayName(), context);
             return CommandResult.STATE_ERROR;
         }
     }

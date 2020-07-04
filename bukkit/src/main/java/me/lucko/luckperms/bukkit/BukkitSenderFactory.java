@@ -27,10 +27,8 @@ package me.lucko.luckperms.bukkit;
 
 import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.sender.SenderFactory;
-import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.Component;
-import net.kyori.text.adapter.bukkit.TextAdapter;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.util.Tristate;
 
 import org.bukkit.command.CommandSender;
@@ -75,13 +73,15 @@ public class BukkitSenderFactory extends SenderFactory<LPBukkitPlugin, CommandSe
 
     @Override
     protected void sendMessage(CommandSender sender, Component message) {
-        if (sender instanceof Player) {
+        /*if (sender instanceof Player) {
             TextAdapter.sendComponent(sender, message);
             return;
         }
 
         // Fallback to legacy format
-        sendMessage(sender, TextUtils.toLegacy(message));
+        sendMessage(sender, TextUtils.toLegacy(message));*/
+
+        // TODO
     }
 
     @Override

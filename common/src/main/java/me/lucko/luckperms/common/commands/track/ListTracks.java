@@ -54,7 +54,7 @@ public class ListTracks extends SingleCommand {
             return CommandResult.LOADING_ERROR;
         }
 
-        Message.TRACKS_LIST.send(sender, MessageUtils.toCommaSep(plugin.getTrackManager().getAll().keySet().stream().sorted().collect(Collectors.toList())));
+        Message.TRACKS_LIST.send(sender, plugin.getTrackManager().getAll().keySet().stream().sorted().collect(Collectors.toList()));
         return CommandResult.SUCCESS;
     }
 }

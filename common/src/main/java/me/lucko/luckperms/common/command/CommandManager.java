@@ -67,9 +67,9 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.util.ImmutableCollectors;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.ClickEvent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 
 import java.util.Collection;
 import java.util.Collections;

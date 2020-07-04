@@ -124,11 +124,7 @@ public final class MessageUtils {
      * @return a string representing the nodes context, or an empty string if the node applies globally.
      */
     public static String getAppendableNodeContextString(LocaleManager localeManager, Node node) {
-        StringBuilder sb = new StringBuilder();
-        for (Context c : node.getContexts()) {
-            sb.append(" ").append(contextToString(localeManager, c.getKey(), c.getValue()));
-        }
-        return sb.toString();
+        return null; //TODO
     }
 
     /**
@@ -141,22 +137,11 @@ public final class MessageUtils {
      * @return a formatted string
      */
     public static String contextToString(LocaleManager localeManager, String key, String value) {
-        return Message.CONTEXT_PAIR.asString(localeManager, key, value);
+        return null; //TODO
     }
 
     public static String contextSetToString(LocaleManager localeManager, ContextSet set) {
-        if (set.isEmpty()) {
-            return Message.CONTEXT_PAIR_GLOBAL_INLINE.asString(localeManager);
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        for (Context e : set) {
-            sb.append(Message.CONTEXT_PAIR_INLINE.asString(localeManager, e.getKey(), e.getValue()));
-            sb.append(Message.CONTEXT_PAIR_SEP.asString(localeManager));
-        }
-
-        return sb.delete(sb.length() - Message.CONTEXT_PAIR_SEP.asString(localeManager).length(), sb.length()).toString();
+        return null; // TODO
     }
 
 }

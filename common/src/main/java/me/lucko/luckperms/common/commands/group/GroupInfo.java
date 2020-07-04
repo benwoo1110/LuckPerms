@@ -40,7 +40,6 @@ import me.lucko.luckperms.common.locale.message.Message;
 import me.lucko.luckperms.common.model.Group;
 import me.lucko.luckperms.common.plugin.LuckPermsPlugin;
 import me.lucko.luckperms.common.sender.Sender;
-import me.lucko.luckperms.common.util.DurationFormatter;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.verbose.event.MetaCheckEvent;
 
@@ -83,15 +82,14 @@ public class GroupInfo extends ChildCommand<Group> {
         if (!parents.isEmpty()) {
             Message.INFO_PARENT_HEADER.send(sender);
             for (InheritanceNode node : parents) {
-                Message.INFO_PARENT_ENTRY.send(sender, node.getGroupName(), MessageUtils.getAppendableNodeContextString(plugin.getLocaleManager(), node));
+                Message.INFO_PARENT_NODE_ENTRY.send(sender, node);
             }
         }
 
         if (!tempParents.isEmpty()) {
             Message.INFO_TEMP_PARENT_HEADER.send(sender);
             for (InheritanceNode node : tempParents) {
-                Message.INFO_PARENT_ENTRY.send(sender, node.getGroupName(), MessageUtils.getAppendableNodeContextString(plugin.getLocaleManager(), node));
-                Message.INFO_PARENT_ENTRY_EXPIRY.send(sender, DurationFormatter.LONG.format(node.getExpiryDuration()));
+                Message.INFO_PARENT_TEMPORARY_NODE_ENTRY.send(sender, node);
             }
         }
 

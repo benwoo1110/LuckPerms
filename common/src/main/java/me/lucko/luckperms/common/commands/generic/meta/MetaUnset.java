@@ -73,7 +73,7 @@ public class MetaUnset extends GenericChildCommand {
         }
 
         if (target.removeIf(DataType.NORMAL, context, NodeType.META.predicate(n -> !n.hasExpiry() && n.getMetaKey().equalsIgnoreCase(key)), false)) {
-            Message.UNSET_META_SUCCESS.send(sender, key, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.UNSET_META_SUCCESS.send(sender, key, target.getFormattedDisplayName(), context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("meta", "unset", key, context)
@@ -82,7 +82,7 @@ public class MetaUnset extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.DOESNT_HAVE_META.send(sender, target.getFormattedDisplayName(), key, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.DOESNT_HAVE_META.send(sender, target.getFormattedDisplayName(), key, context);
             return CommandResult.STATE_ERROR;
         }
     }

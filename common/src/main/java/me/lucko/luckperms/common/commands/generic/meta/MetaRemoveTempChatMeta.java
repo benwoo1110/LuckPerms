@@ -46,8 +46,8 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.data.DataType;
@@ -104,7 +104,7 @@ public class MetaRemoveTempChatMeta extends GenericChildCommand {
         // Handle bulk removal
         if (meta.equalsIgnoreCase("null") || meta.equals("*")) {
             target.removeIf(DataType.NORMAL, context, this.type.nodeType().predicate(n -> n.getPriority() == priority && n.hasExpiry()), false);
-            Message.BULK_REMOVE_TEMP_CHATMETA_SUCCESS.send(sender, target.getFormattedDisplayName(), this.type.name().toLowerCase(), priority, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.BULK_REMOVE_TEMP_CHATMETA_SUCCESS.send(sender, target.getFormattedDisplayName(), this.type, priority, context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("meta" , "removetemp" + this.type.name().toLowerCase(), priority, "*", context)
@@ -117,13 +117,7 @@ public class MetaRemoveTempChatMeta extends GenericChildCommand {
         DataMutateResult result = target.unsetNode(DataType.NORMAL, this.type.builder(meta, priority).expiry(10L).withContext(context).build());
 
         if (result.wasSuccessful()) {
-            TextComponent.Builder builder = Message.REMOVE_TEMP_CHATMETA_SUCCESS.asComponent(plugin.getLocaleManager(), target.getFormattedDisplayName(), this.type.name().toLowerCase(), meta, priority, MessageUtils.contextSetToString(plugin.getLocaleManager(), context)).toBuilder();
-            HoverEvent event = HoverEvent.showText(TextUtils.fromLegacy(
-                    "§3Raw " + this.type.name().toLowerCase() + ": §r" + meta,
-                    '§'
-            ));
-            builder.applyDeep(c -> c.hoverEvent(event));
-            sender.sendMessage(builder.build());
+            Message.REMOVE_TEMP_CHATMETA_SUCCESS.send(sender, target.getFormattedDisplayName(), this.type, meta, priority, context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("meta" , "removetemp" + this.type.name().toLowerCase(), priority, meta, context)
@@ -132,7 +126,7 @@ public class MetaRemoveTempChatMeta extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.DOES_NOT_HAVE_TEMP_CHAT_META.send(sender, target.getFormattedDisplayName(), this.type.name().toLowerCase(), meta, priority, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.DOES_NOT_HAVE_TEMP_CHAT_META.send(sender, target.getFormattedDisplayName(), this.type, meta, priority, context);
             return CommandResult.STATE_ERROR;
         }
     }

@@ -29,8 +29,7 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.sender.SenderFactory;
 import me.lucko.luckperms.sponge.service.CompatibilityUtil;
 
-import net.kyori.text.Component;
-import net.kyori.text.adapter.spongeapi.TextAdapter;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.util.Tristate;
 
 import org.spongepowered.api.command.CommandSource;
@@ -68,7 +67,8 @@ public class SpongeSenderFactory extends SenderFactory<LPSpongePlugin, CommandSo
 
     @Override
     protected void sendMessage(CommandSource source, Component message) {
-        TextAdapter.sendComponent(source, message);
+        //TextAdapter.sendComponent(source, message);
+        // TODO
     }
 
     @Override

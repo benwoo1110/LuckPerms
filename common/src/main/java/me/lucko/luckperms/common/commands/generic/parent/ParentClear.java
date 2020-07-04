@@ -78,11 +78,7 @@ public class ParentClear extends GenericChildCommand {
         }
 
         int changed = before - target.normalData().size();
-        if (changed == 1) {
-            Message.PARENT_CLEAR_SUCCESS_SINGULAR.send(sender, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        } else {
-            Message.PARENT_CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        }
+        Message.PARENT_CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), context, changed);
 
         LoggedAction.build().source(sender).target(target)
                 .description("parent", "clear", context)

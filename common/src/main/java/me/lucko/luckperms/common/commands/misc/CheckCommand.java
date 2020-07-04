@@ -72,7 +72,7 @@ public class CheckCommand extends SingleCommand {
         }
 
         Tristate tristate = user.getCachedData().getPermissionData(user.getQueryOptions()).checkPermission(permission, PermissionCheckEvent.Origin.INTERNAL).result();
-        Message.CHECK_RESULT.send(sender, user.getFormattedDisplayName(), permission, MessageUtils.formatTristate(tristate));
+        Message.CHECK_RESULT.send(sender, user.getFormattedDisplayName(), permission, tristate);
         return CommandResult.SUCCESS;
     }
 

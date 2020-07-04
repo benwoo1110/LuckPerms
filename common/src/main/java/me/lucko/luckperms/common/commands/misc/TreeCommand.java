@@ -42,11 +42,11 @@ import me.lucko.luckperms.common.treeview.TreeView;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.Uuids;
 
-import net.kyori.text.Component;
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.ClickEvent;
-import net.kyori.text.event.HoverEvent;
-import net.kyori.text.format.TextColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -110,9 +110,9 @@ public class TreeCommand extends SingleCommand {
 
         Message.TREE_URL.send(sender);
 
-        Component message = TextComponent.builder(url).color(TextColor.AQUA)
+        Component message = TextComponent.builder(url).color(NamedTextColor.AQUA)
                 .clickEvent(ClickEvent.openUrl(url))
-                .hoverEvent(HoverEvent.showText(TextComponent.of("Click to open the tree view.").color(TextColor.GRAY)))
+                .hoverEvent(HoverEvent.showText(TextComponent.of("Click to open the tree view.").color(NamedTextColor.GRAY)))
                 .build();
 
         sender.sendMessage(message);

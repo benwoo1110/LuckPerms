@@ -85,19 +85,13 @@ public class ParentRemoveTemp extends GenericChildCommand {
             Node mergedNode = result.getMergedNode();
             //noinspection ConstantConditions
             if (mergedNode != null) {
-                Message.UNSET_TEMP_INHERIT_SUBTRACT_SUCCESS.send(sender,
-                        target.getFormattedDisplayName(),
-                        groupName,
-                        DurationFormatter.LONG.format(mergedNode.getExpiryDuration()),
-                        MessageUtils.contextSetToString(plugin.getLocaleManager(), context),
-                        DurationFormatter.LONG.format(duration)
-                );
+                Message.UNSET_TEMP_INHERIT_SUBTRACT_SUCCESS.send(sender, target.getFormattedDisplayName(), groupName, mergedNode.getExpiryDuration(), context, duration);
 
                 LoggedAction.build().source(sender).target(target)
                         .description("parent", "removetemp", groupName, duration, context)
                         .build().submit(plugin, sender);
             } else {
-                Message.UNSET_TEMP_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), groupName, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+                Message.UNSET_TEMP_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), groupName, context);
 
                 LoggedAction.build().source(sender).target(target)
                         .description("parent", "removetemp", groupName, context)
@@ -107,7 +101,7 @@ public class ParentRemoveTemp extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.DOES_NOT_TEMP_INHERIT.send(sender, target.getFormattedDisplayName(), groupName, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.DOES_NOT_TEMP_INHERIT.send(sender, target.getFormattedDisplayName(), groupName, context);
             return CommandResult.STATE_ERROR;
         }
     }

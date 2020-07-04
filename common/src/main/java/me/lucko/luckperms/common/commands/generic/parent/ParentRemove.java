@@ -95,7 +95,7 @@ public class ParentRemove extends GenericChildCommand {
 
         DataMutateResult result = target.unsetNode(DataType.NORMAL, Inheritance.builder(groupName).withContext(context).build());
         if (result.wasSuccessful()) {
-            Message.UNSET_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), groupName, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.UNSET_INHERIT_SUCCESS.send(sender, target.getFormattedDisplayName(), groupName, context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("parent", "remove", groupName, context)
@@ -108,7 +108,7 @@ public class ParentRemove extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.DOES_NOT_INHERIT.send(sender, target.getFormattedDisplayName(), groupName, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.DOES_NOT_INHERIT.send(sender, target.getFormattedDisplayName(), groupName, context);
             return CommandResult.STATE_ERROR;
         }
     }

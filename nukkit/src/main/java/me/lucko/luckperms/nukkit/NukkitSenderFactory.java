@@ -29,7 +29,7 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.sender.SenderFactory;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.Component;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.util.Tristate;
 
 import cn.nukkit.Player;

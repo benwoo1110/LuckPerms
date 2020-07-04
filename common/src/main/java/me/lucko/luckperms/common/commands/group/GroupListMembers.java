@@ -52,13 +52,14 @@ import me.lucko.luckperms.common.sender.Sender;
 import me.lucko.luckperms.common.storage.misc.NodeEntry;
 import me.lucko.luckperms.common.util.DurationFormatter;
 import me.lucko.luckperms.common.util.Iterators;
+import me.lucko.luckperms.common.util.Paginated;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.ComponentBuilder;
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.ClickEvent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.InheritanceNode;
 
@@ -140,7 +141,7 @@ public class GroupListMembers extends ChildCommand<Group> {
         return CommandResult.SUCCESS;
     }
 
-    private static <T extends Comparable<T>> void sendResult(Sender sender, List<NodeEntry<T, InheritanceNode>> results, Function<T, String> lookupFunction, Message headerMessage, HolderType holderType, String label, int page) {
+    private static <T extends Comparable<T>> void sendResult(Sender sender, List<NodeEntry<T, InheritanceNode>> results, Function<T, String> lookupFunction, Message.Args3<Integer, Integer, Integer> headerMessage, HolderType holderType, String label, int page) {
         results = new ArrayList<>(results);
         results.sort(NodeEntryComparator.normal());
 
@@ -162,34 +163,7 @@ public class GroupListMembers extends ChildCommand<Group> {
         headerMessage.send(sender, page, pages.size(), results.size());
 
         for (Map.Entry<String, NodeEntry<T, InheritanceNode>> ent : mappedContent) {
-            String s = "&3> &b" + ent.getKey() + " " + getNodeExpiryString(ent.getValue().getNode()) + MessageUtils.getAppendableNodeContextString(sender.getPlugin().getLocaleManager(), ent.getValue().getNode());
-            TextComponent message = TextUtils.fromLegacy(s, TextUtils.AMPERSAND_CHAR).toBuilder().applyDeep(makeFancy(ent.getKey(), holderType, label, ent.getValue(), sender.getPlugin())).build();
-            sender.sendMessage(message);
+            Message.SEARCH_INHERITS_NODE_ENTRY.send(sender, ent.getValue().getNode(), ent.getKey(), holderType, label, sender.getPlugin());
         }
-    }
-
-    private static String getNodeExpiryString(Node node) {
-        if (!node.hasExpiry()) {
-            return "";
-        }
-
-        return " &8(&7expires in " + DurationFormatter.LONG.format(node.getExpiryDuration()) + "&8)";
-    }
-
-    private static Consumer<ComponentBuilder<? ,?>> makeFancy(String holderName, HolderType holderType, String label, NodeEntry<?, ?> perm, LuckPermsPlugin plugin) {
-        HoverEvent hoverEvent = HoverEvent.showText(TextUtils.fromLegacy(TextUtils.joinNewline(
-                "&3> &b" + ((InheritanceNode) perm.getNode()).getGroupName(),
-                " ",
-                "&7Click to remove this parent from " + holderName
-        ), TextUtils.AMPERSAND_CHAR));
-
-        boolean explicitGlobalContext = !plugin.getConfiguration().getContextsFile().getDefaultContexts().isEmpty();
-        String command = "/" + label + " " + NodeCommandFactory.undoCommand(perm.getNode(), holderName, holderType, explicitGlobalContext);
-        ClickEvent clickEvent = ClickEvent.suggestCommand(command);
-
-        return component -> {
-            component.hoverEvent(hoverEvent);
-            component.clickEvent(clickEvent);
-        };
     }
 }

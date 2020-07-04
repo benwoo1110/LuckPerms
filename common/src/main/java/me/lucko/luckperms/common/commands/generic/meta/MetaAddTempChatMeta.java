@@ -48,8 +48,8 @@ import me.lucko.luckperms.common.util.DurationFormatter;
 import me.lucko.luckperms.common.util.Predicates;
 import me.lucko.luckperms.common.util.TextUtils;
 
-import net.kyori.text.TextComponent;
-import net.kyori.text.event.HoverEvent;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.data.DataType;
@@ -112,13 +112,7 @@ public class MetaAddTempChatMeta extends GenericChildCommand {
         if (result.getResult().wasSuccessful()) {
             duration = result.getMergedNode().getExpiryDuration();
 
-            TextComponent.Builder builder = Message.ADD_TEMP_CHATMETA_SUCCESS.asComponent(plugin.getLocaleManager(), target.getFormattedDisplayName(), this.type.name().toLowerCase(), meta, priority, DurationFormatter.LONG.format(duration), MessageUtils.contextSetToString(plugin.getLocaleManager(), context)).toBuilder();
-            HoverEvent event = HoverEvent.showText(TextUtils.fromLegacy(
-                    "§3Raw " + this.type.name().toLowerCase() + ": §r" + meta,
-                    '§'
-            ));
-            builder.applyDeep(c -> c.hoverEvent(event));
-            sender.sendMessage(builder.build());
+            Message.ADD_TEMP_CHATMETA_SUCCESS.send(sender, target.getFormattedDisplayName(), this.type, meta, priority, duration, context);
 
             LoggedAction.build().source(sender).target(target)
                     .description("meta" , "addtemp" + this.type.name().toLowerCase(), priority, meta, duration, context)
@@ -127,7 +121,7 @@ public class MetaAddTempChatMeta extends GenericChildCommand {
             StorageAssistant.save(target, sender, plugin);
             return CommandResult.SUCCESS;
         } else {
-            Message.ALREADY_HAS_TEMP_CHAT_META.send(sender, target.getFormattedDisplayName(), this.type.name().toLowerCase(), meta, priority, MessageUtils.contextSetToString(plugin.getLocaleManager(), context));
+            Message.ALREADY_HAS_TEMP_CHAT_META.send(sender, target.getFormattedDisplayName(), this.type, meta, priority, context);
             return CommandResult.STATE_ERROR;
         }
     }

@@ -107,11 +107,7 @@ public class MetaClear extends GenericChildCommand {
         }
 
         int changed = before - target.normalData().size();
-        if (changed == 1) {
-            Message.META_CLEAR_SUCCESS_SINGULAR.send(sender, target.getFormattedDisplayName(), type.name().toLowerCase(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        } else {
-            Message.META_CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), type.name().toLowerCase(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        }
+        Message.META_CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), type.name().toLowerCase(), context, changed);
 
         LoggedAction.build().source(sender).target(target)
                 .description("meta", "clear", context)

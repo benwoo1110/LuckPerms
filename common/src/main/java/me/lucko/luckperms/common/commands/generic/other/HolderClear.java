@@ -79,11 +79,7 @@ public class HolderClear<T extends PermissionHolder> extends ChildCommand<T> {
         }
 
         int changed = before - target.normalData().size();
-        if (changed == 1) {
-            Message.CLEAR_SUCCESS_SINGULAR.send(sender, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        } else {
-            Message.CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), MessageUtils.contextSetToString(plugin.getLocaleManager(), context), changed);
-        }
+        Message.CLEAR_SUCCESS.send(sender, target.getFormattedDisplayName(), context, changed);
 
         LoggedAction.build().source(sender).target(target)
                 .description("clear", context)
